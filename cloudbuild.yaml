@@ -1,0 +1,23 @@
+# Usage:
+#   gcloud builds submit --config cloudbuild.yaml \
+#     --substitutions=_IMAGE=asia-south1-docker.pkg.dev/PROJECT_ID/web/portfolio,_EMAILJS_SERVICE_ID=xxx,_EMAILJS_TEMPLATE_ID=yyy,_EMAILJS_PUBLIC_KEY=zzz
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - ${_IMAGE}
+      - --build-arg
+      - VITE_APP_EMAILJS_SERVICE_ID=${_EMAILJS_SERVICE_ID}
+      - --build-arg
+      - VITE_APP_EMAILJS_TEMPLATE_ID=${_EMAILJS_TEMPLATE_ID}
+      - --build-arg
+      - VITE_APP_EMAILJS_PUBLIC_KEY=${_EMAILJS_PUBLIC_KEY}
+      - .
+images:
+  - ${_IMAGE}
+substitutions:
+  _IMAGE: asia-south1-docker.pkg.dev/PROJECT_ID/web/portfolio
+  _EMAILJS_SERVICE_ID: ""
+  _EMAILJS_TEMPLATE_ID: ""
+  _EMAILJS_PUBLIC_KEY: ""
